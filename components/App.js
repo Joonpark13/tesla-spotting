@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
+import { StackNavigator } from 'react-navigation';
+
+import SignUp from './SignUp';
 import Login from './Login';
 
-import firebase from './firebase';
+const App = StackNavigator({
+  Home: { screen: SignUp },
+  Login: { screen: Login },
+});
 
-export default class App extends Component {
-  render() {
-    return (
-      <Login />
-    );
-  }
-}
+export default App;
