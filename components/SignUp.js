@@ -8,6 +8,7 @@ import {
   Button,
   Platform,
 } from 'react-native';
+import firebase from './firebase';
 
 import tesla from '../images/tesla_t_grey.png';
 
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
   },
   iOSInput: { // iOS
     borderBottomColor: 'gray',
-    borderBottomWidth: 1, 
+    borderBottomWidth: 1,
     marginVertical: 8,
   },
   errorText: {
@@ -61,11 +62,14 @@ class SignUp extends Component {
       passwordValid: true,
       confirm: '',
       confirmValid: true,
+      emptySubmit: false,
+      errorMessage: null,
     };
 
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleConfirmChange = this.handleConfirmChange.bind(this);
+    this.createUser = this.createUser.bind(this);
   }
 
   handleEmailChange(email) {
@@ -89,7 +93,7 @@ class SignUp extends Component {
   }
 
   handlePasswordChange(pass) {
-    this.setState({ pass });
+    this.setState({ password: pass });
 
     // Passwords must be longer than 4 letters
     this.setState({ passwordValid: pass === '' || pass.length > 4 });
@@ -99,7 +103,21 @@ class SignUp extends Component {
     this.setState({ confirm: pass });
 
     // Passwords must match
-    this.setState({ confirmValid: pass === this.state.pass });
+    this.setState({ confirmValid: pass === this.state.password });
+  }
+
+  createUser() {
+    if (this.state.email === '' || this.state.password === '') {
+      this.setState({ emptySubmit: true });
+    } else if (this.state.emailValid && this.state.passwordValid) {
+      this.setState({ emptySubmit: false });
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.state.email, this.state.password)
+        .catch((error) => {
+          this.setState({ errorMessage: error.message });
+        });
+    }
   }
 
   render() {
@@ -153,7 +171,17 @@ class SignUp extends Component {
                 value={this.confirm}
               />
             </View>
-            <Button title="Create Account" />
+
+            {this.state.emptySubmit &&
+              <Text style={styles.errorText}>Email and Password must not be empty</Text>
+            }
+            {this.state.errorMessage &&
+              <Text style={styles.errorText}>{this.state.errorMessage}</Text>
+            }
+            <Button
+              title="Create Account"
+              onPress={this.createUser}
+            />
           </View>
 
           <View style={styles.suboptionContainer}>

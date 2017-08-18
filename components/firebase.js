@@ -8,6 +8,6 @@ const config = {
   storageBucket: "tesla-spotting.appspot.com",
   messagingSenderId: "747911069867"
 };
-const firebaseApp = firebase.initializeApp(config);
+firebase.initializeApp(config);
 
-export default firebaseApp;
+export default firebase;
