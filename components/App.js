@@ -2,12 +2,12 @@ import { StackNavigator } from 'react-navigation';
 
 import SignUp from './SignUp';
 import Login from './Login';
-import Spot from './Spot';
+import MainNav from './MainNav';
 
 const App = StackNavigator({
   Home: { screen: SignUp },
   Login: { screen: Login },
-  Spot: { screen: Spot },
+  MainNav: { screen: MainNav },
 });
 
 export default App;

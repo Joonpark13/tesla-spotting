@@ -78,18 +78,18 @@ class Login extends Component {
       firebase
         .auth()
         .signInWithEmailAndPassword(this.state.email, this.state.password)
-        .catch((error) => {
+        .then(() => {
+          // Reset the navigational stack and replace it with Spot.js
+          const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({ routeName: 'MainNav' }),
+            ],
+          });
+          this.props.navigation.dispatch(resetAction);
+        }).catch((error) => {
           this.setState({ errorMessage: error.message });
         });
-
-      // Reset the navigational stack and replace it with Spot.js
-      const resetAction = NavigationActions.reset({
-        index: 0,
-        actions: [
-          NavigationActions.navigate({ routeName: 'Spot' }),
-        ],
-      });
-      this.props.navigation.dispatch(resetAction);
     }
   }
 
