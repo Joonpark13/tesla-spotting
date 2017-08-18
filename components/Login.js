@@ -79,7 +79,7 @@ class Login extends Component {
         .auth()
         .signInWithEmailAndPassword(this.state.email, this.state.password)
         .then(() => {
-          // Reset the navigational stack and replace it with Spot.js
+          // Reset the navigational stack and replace it with MainNav
           const resetAction = NavigationActions.reset({
             index: 0,
             actions: [

@@ -7,7 +7,12 @@ import MainNav from './MainNav';
 const App = StackNavigator({
   Home: { screen: SignUp },
   Login: { screen: Login },
-  MainNav: { screen: MainNav },
+  MainNav: {
+    screen: MainNav,
+    navigationOptions: {
+      header: null,
+    },
+  },
 });
 
 export default App;

@@ -109,7 +109,7 @@ class SignUp extends Component {
       const resetAction = NavigationActions.reset({
         index: 0,
         actions: [
-          NavigationActions.navigate({ routeName: 'Spot' }),
+          NavigationActions.navigate({ routeName: 'MainNav' }),
         ],
       });
       this.props.navigation.dispatch(resetAction);

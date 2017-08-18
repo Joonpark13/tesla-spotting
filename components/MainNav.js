@@ -1,11 +1,28 @@
-import { DrawerNavigator } from 'react-navigation';
+import { Platform } from 'react-native';
+import { DrawerNavigator, TabNavigator } from 'react-navigation';
 
-import Spot from './Spot';
+import Home from './Home';
+import Profile from './Profile';
 
-const MainNav = DrawerNavigator({
-  Home: {
-    screen: Spot,
-  },
-});
+const MainNav = Platform.OS === 'ios'
+  ? (
+    TabNavigator({
+      Home: {
+        screen: Home,
+      },
+      Profile: {
+        screen: Profile,
+      },
+    })
+  ) : (
+    DrawerNavigator({
+      Home: {
+        screen: Home,
+      },
+      Profile: {
+        screen: Profile,
+      },
+    })
+  );
 
 export default MainNav;
