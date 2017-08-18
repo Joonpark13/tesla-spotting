@@ -8,7 +8,11 @@ import {
   Button,
   Platform,
 } from 'react-native';
+
 import firebase from './firebase';
+import { helperStyles } from './helpers';
+import Email from './Email';
+import Password from './Password';
 
 import tesla from '../images/tesla_t_grey.png';
 
@@ -40,15 +44,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginBottom: 6,
   },
-  iOSInput: { // iOS
-    borderBottomColor: 'gray',
-    borderBottomWidth: 1,
-    marginVertical: 8,
-  },
-  errorText: {
-    fontSize: 12,
-    color: 'red',
-  },
 });
 
 class SignUp extends Component {
@@ -66,37 +61,18 @@ class SignUp extends Component {
       errorMessage: null,
     };
 
-    this.handleEmailChange = this.handleEmailChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handleEmail = this.handleEmail.bind(this);
+    this.handlePassword = this.handlePassword.bind(this);
     this.handleConfirmChange = this.handleConfirmChange.bind(this);
     this.createUser = this.createUser.bind(this);
   }
 
-  handleEmailChange(email) {
+  handleEmail(email) {
     this.setState({ email });
-
-    // If there is already a timeout in process, clear it
-    if (this.timeout) clearTimeout(this.timeout);
-
-    this.timeout = setTimeout(() => {
-      this.timeout = null;
-
-      if (email) {
-        // Handle email validation by regex: http://emailregex.com/
-        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        this.setState({ emailValid: re.test(email) });
-      } else {
-        // If field is empty, don't display error message
-        this.setState({ emailValid: true });
-      }
-    }, 500); // half second wait after typing to validate
   }
 
-  handlePasswordChange(pass) {
+  handlePassword(pass) {
     this.setState({ password: pass });
-
-    // Passwords must be longer than 4 letters
-    this.setState({ passwordValid: pass === '' || pass.length > 4 });
   }
 
   handleConfirmChange(pass) {
@@ -132,37 +108,17 @@ class SignUp extends Component {
             <Text style={styles.sectionTitle}>Sign up</Text>
 
             <View style={styles.inputContainer}>
-              {!this.state.emailValid && <Text style={styles.errorText}>Invalid Email</Text>}
-              <TextInput
-                style={Platform.OS === 'ios' ? styles.iOSInput : undefined}
-                placeholder="Email"
-                autoCorrect={false}
-                autoCapitalize="none"
-                keyboardType="email-address"
-                onChangeText={this.handleEmailChange}
-                value={this.email}
-              />
+              <Email email={this.state.email} handleEmail={this.handleEmail} />
             </View>
             <View style={styles.inputContainer}>
-              {!this.state.passwordValid &&
-                <Text style={styles.errorText}>Passwords must be longer than 4 characters</Text>
-              }
-              <TextInput
-                style={Platform.OS === 'ios' ? styles.iOSInput : undefined}
-                placeholder="Password"
-                autoCorrect={false}
-                autoCapitalize="none"
-                secureTextEntry
-                onChangeText={this.handlePasswordChange}
-                value={this.password}
-              />
+              <Password password={this.state.password} handlePassword={this.handlePassword} />
             </View>
             <View style={styles.inputContainer}>
               {!this.state.confirmValid &&
-                <Text style={styles.errorText}>Passwords must match</Text>
+                <Text style={helperStyles.errorText}>Passwords must match</Text>
               }
               <TextInput
-                style={Platform.OS === 'ios' ? styles.iOSInput : undefined}
+                style={Platform.OS === 'ios' ? helperStyles.iOSInput : undefined}
                 placeholder="Confirm Password"
                 autoCorrect={false}
                 autoCapitalize="none"
@@ -173,10 +129,10 @@ class SignUp extends Component {
             </View>
 
             {this.state.emptySubmit &&
-              <Text style={styles.errorText}>Email and Password must not be empty</Text>
+              <Text style={helperStyles.errorText}>Email and Password must not be empty</Text>
             }
             {this.state.errorMessage &&
-              <Text style={styles.errorText}>{this.state.errorMessage}</Text>
+              <Text style={helperStyles.errorText}>{this.state.errorMessage}</Text>
             }
             <Button
               title="Create Account"
