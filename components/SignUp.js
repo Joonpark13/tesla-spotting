@@ -101,18 +101,18 @@ class SignUp extends Component {
       firebase
         .auth()
         .createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .catch((error) => {
+        .then(() => {
+          // Reset the navigational stack and replace it with MainNav
+          const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({ routeName: 'MainNav' }),
+            ],
+          });
+          this.props.navigation.dispatch(resetAction);
+        }).catch((error) => {
           this.setState({ errorMessage: error.message });
         });
-
-      // Reset the navigational stack and replace it with Spot.js
-      const resetAction = NavigationActions.reset({
-        index: 0,
-        actions: [
-          NavigationActions.navigate({ routeName: 'MainNav' }),
-        ],
-      });
-      this.props.navigation.dispatch(resetAction);
     }
   }
 

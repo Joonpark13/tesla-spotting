@@ -46,7 +46,10 @@ class Login extends Component {
 
     if (this.state.emptySubmit) {
       if (email !== '') {
-        this.setState({ emptySubmit: false });
+        this.setState({
+          emptySubmit: false,
+          errorMessage: null,
+        });
       }
     }
   }
@@ -56,7 +59,10 @@ class Login extends Component {
 
     if (this.state.emptySubmit) {
       if (pass !== '') {
-        this.setState({ emptySubmit: false });
+        this.setState({
+          emptySubmit: false,
+          errorMessage: null,
+        });
       }
     }
   }
