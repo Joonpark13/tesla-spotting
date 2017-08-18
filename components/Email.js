@@ -11,10 +11,6 @@ class Email extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      emailValid: true,
-    };
-
     this.handleEmailChange = this.handleEmailChange.bind(this);
   }
 
@@ -28,10 +24,10 @@ class Email extends Component {
       this.timeout = null;
 
       if (email) {
-        this.setState({ emailValid: emailValidation(email) });
+        this.props.handleValidation(emailValidation(email));
       } else {
         // If field is empty, don't display error message
-        this.setState({ emailValid: true });
+        this.props.handleValidation(true);
       }
     }, 500); // half second wait after typing to validate
   }
@@ -40,7 +36,7 @@ class Email extends Component {
   render() {
     return (
       <View>
-        {!this.state.emailValid && <Text style={helperStyles.errorText}>Invalid Email</Text>}
+        {!this.props.valid && <Text style={helperStyles.errorText}>Invalid Email</Text>}
         <TextInput
           style={Platform.OS === 'ios' ? helperStyles.iOSInput : undefined}
           placeholder="Email"

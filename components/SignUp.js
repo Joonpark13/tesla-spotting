@@ -8,6 +8,7 @@ import {
   Button,
   Platform,
 } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 
 import firebase from './firebase';
 import { helperStyles } from './helpers';
@@ -63,6 +64,8 @@ class SignUp extends Component {
 
     this.handleEmail = this.handleEmail.bind(this);
     this.handlePassword = this.handlePassword.bind(this);
+    this.validateEmail = this.validateEmail.bind(this);
+    this.validatePassword = this.validatePassword.bind(this);
     this.handleConfirmChange = this.handleConfirmChange.bind(this);
     this.createUser = this.createUser.bind(this);
   }
@@ -73,6 +76,14 @@ class SignUp extends Component {
 
   handlePassword(pass) {
     this.setState({ password: pass });
+  }
+
+  validateEmail(valid) {
+    this.setState({ emailValid: valid });
+  }
+
+  validatePassword(valid) {
+    this.setState({ passwordValid: valid });
   }
 
   handleConfirmChange(pass) {
@@ -93,6 +104,15 @@ class SignUp extends Component {
         .catch((error) => {
           this.setState({ errorMessage: error.message });
         });
+
+      // Reset the navigational stack and replace it with Spot.js
+      const resetAction = NavigationActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({ routeName: 'Spot' }),
+        ],
+      });
+      this.props.navigation.dispatch(resetAction);
     }
   }
 
@@ -108,10 +128,20 @@ class SignUp extends Component {
             <Text style={styles.sectionTitle}>Sign up</Text>
 
             <View style={styles.inputContainer}>
-              <Email email={this.state.email} handleEmail={this.handleEmail} />
+              <Email
+                email={this.state.email}
+                valid={this.state.emailValid}
+                handleEmail={this.handleEmail}
+                handleValidation={this.validateEmail}
+              />
             </View>
             <View style={styles.inputContainer}>
-              <Password password={this.state.password} handlePassword={this.handlePassword} />
+              <Password
+                password={this.state.password}
+                valid={this.state.passwordValid}
+                handlePassword={this.handlePassword}
+                handleValidation={this.validatePassword}
+              />
             </View>
             <View style={styles.inputContainer}>
               {!this.state.confirmValid &&

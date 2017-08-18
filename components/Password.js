@@ -11,24 +11,20 @@ class Password extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      passwordValid: true,
-    };
-
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
   }
 
   handlePasswordChange(pass) {
     this.props.handlePassword(pass);
 
-    this.setState({ passwordValid: pass === '' || passwordValidation(pass) });
+    this.props.handleValidation(pass === '' || passwordValidation(pass));
   }
 
 
   render() {
     return (
       <View>
-        {!this.state.passwordValid &&
+        {!this.props.valid &&
           <Text style={helperStyles.errorText}>
             Passwords must be longer than 4 characters
           </Text>
@@ -40,7 +36,7 @@ class Password extends Component {
           autoCapitalize="none"
           secureTextEntry
           onChangeText={this.handlePasswordChange}
-          value={this.password}
+          value={this.props.password}
         />
       </View>
     );
