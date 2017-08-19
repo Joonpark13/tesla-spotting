@@ -1,12 +1,26 @@
 import React, { Component } from 'react';
-import { StyleSheet, Platform, View, Text, ToolbarAndroid } from 'react-native';
+import {
+  StyleSheet,
+  Platform,
+  View,
+  ScrollView,
+} from 'react-native';
 
 import firebase from './firebase';
+import ModelCard from './ModelCard';
+import IOSStatusSpacer from './IOSStatusSpacer';
+import AndroidToolbar from './AndroidToolbar';
 
-import menuIcon from '../images/ic_menu_black_24dp_2x.png';
+import modelS from '../images/s.jpg';
+import modelX from '../images/x.jpg';
+import roadster from '../images/roadster.jpg';
+import model3 from '../images/3.jpg';
 
 const styles = StyleSheet.create({
-  toolbar: {
+  modelSelect: {
+    height: '100%',
+  },
+  spacer: {
     height: 50,
   },
 });
@@ -33,15 +47,15 @@ class Home extends Component {
   render() {
     return (
       <View>
-        {Platform.OS === 'android' && (
-          <ToolbarAndroid
-            title="Tesla Spotting"
-            navIcon={menuIcon}
-            style={styles.toolbar}
-            onIconClicked={() => this.props.navigation.navigate('DrawerOpen')}
-          />
-        )}
-        {this.state.loggedIn && <Text>success</Text>}
+        <IOSStatusSpacer />
+        {Platform.OS === 'android' && <AndroidToolbar navOpen={() => this.props.navigation.navigate('DrawerOpen')} />}
+        <ScrollView style={styles.modelSelect}>
+          <ModelCard image={modelS} name="Model S" />
+          <ModelCard image={modelX} name="Model X" />
+          <ModelCard image={roadster} name="Roadster" />
+          <ModelCard image={model3} name="Model 3" />
+          {Platform.OS === 'android' && <View style={styles.spacer} />}
+        </ScrollView>
       </View>
     );
   }

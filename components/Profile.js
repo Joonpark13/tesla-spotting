@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { View, Button } from 'react-native';
+import { Platform, View, Button } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 
 import firebase from './firebase';
+import AndroidToolbar from './AndroidToolbar';
+import IOSStatusSpacer from './IOSStatusSpacer';
 
 class Profile extends Component {
   constructor(props) {
@@ -43,6 +45,8 @@ class Profile extends Component {
   render() {
     return (
       <View>
+        <IOSStatusSpacer />
+        {Platform.OS === 'android' && <AndroidToolbar navOpen={() => this.props.navigation.navigate('DrawerOpen')} />}
         {this.state.loggedIn &&
           <Button title="Log Out" onPress={this.handleLogOut} />
         }

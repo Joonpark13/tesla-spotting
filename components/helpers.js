@@ -20,3 +20,7 @@ export const helperStyles = StyleSheet.create({
     marginVertical: 8,
   },
 });
+
+export const colors = {
+  teslaRed: '#cc0000',
+};

@@ -3,12 +3,16 @@ import { DrawerNavigator, TabNavigator } from 'react-navigation';
 
 import Home from './Home';
 import Profile from './Profile';
+import Teslas from './Teslas';
 
 const MainNav = Platform.OS === 'ios'
   ? (
     TabNavigator({
       Home: {
         screen: Home,
+      },
+      Teslas: {
+        screen: Teslas,
       },
       Profile: {
         screen: Profile,
@@ -19,9 +23,14 @@ const MainNav = Platform.OS === 'ios'
       Home: {
         screen: Home,
       },
+      Teslas: {
+        screen: Teslas,
+      },
       Profile: {
         screen: Profile,
       },
+    }, {
+      drawerWidth: 150,
     })
   );
 
