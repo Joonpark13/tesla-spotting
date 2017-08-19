@@ -1,6 +1,6 @@
 # Tesla Spotting
 
-The though process went as follows:
+The thought process went as follows:
  - Oh hey, look, it's a Tesla!
  - Oh hey, look, it's another Tesla!
  - Gee, I've seen a lot of Teslas this week... I wish I could easily keep track of

@@ -61,7 +61,13 @@ class Home extends Component {
     return (
       <View>
         <IOSStatusSpacer />
-        {Platform.OS === 'android' && <AndroidToolbar navOpen={() => this.props.navigation.navigate('DrawerOpen')} />}
+        {Platform.OS === 'android' &&
+          <AndroidToolbar
+            title="Tesla Spotting"
+            navOpen={() => this.props.navigation.navigate('DrawerOpen')}
+          />
+        }
+
         <ScrollView style={styles.modelSelect}>
           <ModelCard image={modelS} name="Model S" handleSpot={() => this.handleSpot('Model S')} />
           <ModelCard image={modelX} name="Model X" handleSpot={() => this.handleSpot('Model X')} />

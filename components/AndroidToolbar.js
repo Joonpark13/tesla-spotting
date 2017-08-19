@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 
 const AndroidToolbar = props => (
   <ToolbarAndroid
-    title="Tesla Spotting"
+    title={props.title}
     titleColor="white"
     navIcon={menuIcon}
     style={styles.toolbar}

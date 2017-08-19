@@ -46,7 +46,12 @@ class Profile extends Component {
     return (
       <View>
         <IOSStatusSpacer />
-        {Platform.OS === 'android' && <AndroidToolbar navOpen={() => this.props.navigation.navigate('DrawerOpen')} />}
+        {Platform.OS === 'android' &&
+          <AndroidToolbar
+            title="Profile"
+            navOpen={() => this.props.navigation.navigate('DrawerOpen')}
+          />
+        }
         {this.state.loggedIn &&
           <Button title="Log Out" onPress={this.handleLogOut} />
         }

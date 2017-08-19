@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Platform, View } from 'react-native';
+import { Platform, Text } from 'react-native';
+import { Container, Content, Card, CardItem, } from 'native-base';
 
 import firebase from './firebase';
 import AndroidToolbar from './AndroidToolbar';
@@ -36,9 +37,30 @@ class Teslas extends Component {
 
   render() {
     return (
-      <View>
-        {Platform.OS === 'android' && <AndroidToolbar navOpen={() => this.props.navigation.navigate('DrawerOpen')} />}
-      </View>
+      <Container>
+        <Content>
+          {Platform.OS === 'android' &&
+            <AndroidToolbar
+              title="Teslas"
+              navOpen={() => this.props.navigation.navigate('DrawerOpen')}
+            />
+          }
+
+          {this.state.teslas.map((tesla) => {
+            const datetime = new Date(tesla.time);
+            return (
+              <Card key={tesla.key}>
+                <CardItem>
+                  <Text>{tesla.model}</Text>
+                  <Text>{datetime.toDateString()}</Text>
+                  <Text>{tesla.color}</Text>
+                  <Text>{tesla.details}</Text>
+                </CardItem>
+              </Card>
+            );
+          })}
+        </Content>
+      </Container>
     );
   }
 }
