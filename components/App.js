@@ -4,6 +4,7 @@ import SignUp from './SignUp';
 import Login from './Login';
 import MainNav from './MainNav';
 import Splash from './Splash';
+import Spotting from './Spotting';
 
 const App = StackNavigator({
   Home: { screen: Splash },
@@ -14,6 +15,9 @@ const App = StackNavigator({
     navigationOptions: {
       header: null,
     },
+  },
+  Spotting: {
+    screen: Spotting,
   },
 });
 

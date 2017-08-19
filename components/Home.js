@@ -50,10 +50,10 @@ class Home extends Component {
         <IOSStatusSpacer />
         {Platform.OS === 'android' && <AndroidToolbar navOpen={() => this.props.navigation.navigate('DrawerOpen')} />}
         <ScrollView style={styles.modelSelect}>
-          <ModelCard image={modelS} name="Model S" />
-          <ModelCard image={modelX} name="Model X" />
-          <ModelCard image={roadster} name="Roadster" />
-          <ModelCard image={model3} name="Model 3" />
+          <ModelCard image={modelS} name="Model S" handleSpot={() => this.props.navigation.navigate('Spotting', { model: 'Model S' })} />
+          <ModelCard image={modelX} name="Model X" handleSpot={() => this.props.navigation.navigate('Spotting', { model: 'Model X' })} />
+          <ModelCard image={roadster} name="Roadster" handleSpot={() => this.props.navigation.navigate('Spotting', { model: 'Roadster' })} />
+          <ModelCard image={model3} name="Model 3" handleSpot={() => this.props.navigation.navigate('Spotting', { model: 'Model 3' })} />
           {Platform.OS === 'android' && <View style={styles.spacer} />}
         </ScrollView>
       </View>

@@ -28,7 +28,10 @@ const styles = StyleSheet.create({
 });
 
 const ModelCard = props => (
-  <TouchableHighlight style={styles.modelImageContainer}>
+  <TouchableHighlight
+    style={styles.modelImageContainer}
+    onPress={props.handleSpot}
+  >
     <View>
       <Image source={props.image} blurRadius={2} style={styles.modelImages} />
       <View style={styles.modelImageCover}>
