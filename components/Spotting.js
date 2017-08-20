@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Button, TextInput } from 'react-native';
+import { View, Text, Button, TextInput, Image } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 
 import firebase from './firebase';
@@ -12,9 +12,11 @@ class Spotting extends Component {
       color: '',
       details: '',
       uid: null,
+      image: null,
     };
 
     this.handleSave = this.handleSave.bind(this);
+    this.handleImage = this.handleImage.bind(this);
   }
 
   componentDidMount() {
@@ -43,6 +45,10 @@ class Spotting extends Component {
     });
   }
 
+  handleImage(uri) {
+    this.setState({ image: uri });
+  }
+
   render() {
     const navProps = this.props.navigation.state.params;
     return (
@@ -68,6 +74,17 @@ class Spotting extends Component {
           numberOfLines={4}
         />
 
+        {this.state.image &&
+          <Image source={{ uri: this.state.image }} style={{ width: '100%', height: 100 }} />
+        }
+        <Button
+          title="Add a Photo"
+          onPress={() => {
+            this.props.navigation.navigate('Camera', {
+              handleImage: this.handleImage,
+            });
+          }}
+        />
         <Button title="Save" onPress={this.handleSave} />
       </View>
     );

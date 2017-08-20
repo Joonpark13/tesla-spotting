@@ -5,6 +5,7 @@ import Login from './Login';
 import MainNav from './MainNav';
 import Splash from './Splash';
 import Spotting from './Spotting';
+import CameraView from './CameraView';
 
 const App = StackNavigator({
   Home: { screen: Splash },
@@ -16,9 +17,8 @@ const App = StackNavigator({
       header: null,
     },
   },
-  Spotting: {
-    screen: Spotting,
-  },
+  Spotting: { screen: Spotting },
+  Camera: { screen: CameraView },
 });
 
 export default App;
