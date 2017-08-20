@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Platform, Text } from 'react-native';
-import { Container, Content, Card, CardItem, } from 'native-base';
+import { Platform, Text, Image } from 'react-native';
+import { Container, Content, Card, CardItem } from 'native-base';
 
 import firebase from './firebase';
 import AndroidToolbar from './AndroidToolbar';
@@ -56,6 +56,11 @@ class Teslas extends Component {
                   <Text>{tesla.color}</Text>
                   <Text>{tesla.details}</Text>
                 </CardItem>
+                {tesla.image &&
+                  <CardItem cardBody>
+                    <Image source={{ uri: tesla.image.mediaUri }} style={{ width: '100%', height: 100 }} />
+                  </CardItem>
+                }
               </Card>
             );
           })}

@@ -57,8 +57,8 @@ class Spotting extends Component {
           const backAction = NavigationActions.back();
           this.props.navigation.dispatch(backAction);
         });
-
     }
+
     // Firebase database write
     const db = firebase.database();
     const ref = db.ref(`users/${this.state.uid}/teslas`);
@@ -69,6 +69,7 @@ class Spotting extends Component {
       time: navProps.time,
       color: this.state.color,
       details: this.state.details,
+      image: this.state.image,
     }).then(() => {
       // TODO: Wait for both firebase actions to complete before going back
       // TODO: implement loading circle while actions take place
