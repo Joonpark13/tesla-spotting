@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, Button, TextInput, Image } from 'react-native';
 import { NavigationActions } from 'react-navigation';
+import RNFetchBlob from 'react-native-fetch-blob';
 
 import firebase from './firebase';
 
@@ -30,6 +31,35 @@ class Spotting extends Component {
   handleSave() {
     const navProps = this.props.navigation.state.params;
 
+    // Firebase Storage upload using react-native-fetch-blob
+    if (this.state.image) {
+      // Store original window variables to put back later
+      const tempXMLHttpRequest = window.XMLHttpRequest;
+      const tempBlob = window.Blob;
+
+
+      // https://github.com/wkh237/react-native-fetch-blob/issues/83
+      const polyfill = RNFetchBlob.polyfill;
+
+      // use react-native-fetch-blob's polyfill for firebase upload
+      window.XMLHttpRequest = polyfill.XMLHttpRequest;
+      window.Blob = polyfill.Blob;
+
+      const storageRef = firebase.storage().ref();
+      const imageRef = storageRef.child(`images/${this.state.uid}/${navProps.time}.jpg`);
+
+      Blob.build(RNFetchBlob.wrap(this.state.image.path), { type: 'image/jpeg' })
+        .then(blob => imageRef.put(blob)).then((snapshot) => {
+          // Put back the original window variables
+          window.XMLHttpRequest = tempXMLHttpRequest;
+          window.Blob = tempBlob;
+
+          const backAction = NavigationActions.back();
+          this.props.navigation.dispatch(backAction);
+        });
+
+    }
+    // Firebase database write
     const db = firebase.database();
     const ref = db.ref(`users/${this.state.uid}/teslas`);
     ref.push().set({
@@ -40,13 +70,13 @@ class Spotting extends Component {
       color: this.state.color,
       details: this.state.details,
     }).then(() => {
-      const backAction = NavigationActions.back();
-      this.props.navigation.dispatch(backAction);
+      // TODO: Wait for both firebase actions to complete before going back
+      // TODO: implement loading circle while actions take place
     });
   }
 
-  handleImage(uri) {
-    this.setState({ image: uri });
+  handleImage(image) {
+    this.setState({ image });
   }
 
   render() {
@@ -75,7 +105,7 @@ class Spotting extends Component {
         />
 
         {this.state.image &&
-          <Image source={{ uri: this.state.image }} style={{ width: '100%', height: 100 }} />
+          <Image source={{ uri: this.state.image.mediaUri }} style={{ width: '100%', height: 100 }} />
         }
         <Button
           title="Add a Photo"

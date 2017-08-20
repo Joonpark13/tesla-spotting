@@ -13,16 +13,12 @@ class CameraView extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      temp: null,
-    };
-
     this.takePicture = this.takePicture.bind(this);
   }
 
   takePicture() {
     this.camera.capture().then((data) => {
-      this.props.navigation.state.params.handleImage(data.mediaUri);
+      this.props.navigation.state.params.handleImage(data);
     });
   }
 
