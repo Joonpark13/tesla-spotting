@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, Text, Image } from 'react-native';
+import { Platform, Text, Image, TouchableHighlight } from 'react-native';
 import { Container, Content, Card, CardItem } from 'native-base';
 
 import firebase from './firebase';
@@ -49,19 +49,24 @@ class Teslas extends Component {
           {this.state.teslas.map((tesla) => {
             const datetime = new Date(tesla.time);
             return (
-              <Card key={tesla.key}>
-                <CardItem>
-                  <Text>{tesla.model}</Text>
-                  <Text>{datetime.toDateString()}</Text>
-                  <Text>{tesla.color}</Text>
-                  <Text>{tesla.details}</Text>
-                </CardItem>
-                {tesla.image &&
-                  <CardItem cardBody>
-                    <Image source={{ uri: tesla.image.mediaUri }} style={{ width: '100%', height: 100 }} />
+              <TouchableHighlight
+                onPress={() => {
+                  this.props.navigation.navigate('Details', { ...tesla });
+                }}
+              >
+                <Card key={tesla.key}>
+                  <CardItem>
+                    <Text>{tesla.model}</Text>
+                    <Text>{tesla.color}</Text>
+                    <Text>{datetime.toDateString()}</Text>
                   </CardItem>
-                }
-              </Card>
+                  {tesla.image &&
+                    <CardItem cardBody>
+                      <Image source={{ uri: tesla.image.mediaUri }} style={{ width: '100%', height: 100 }} />
+                    </CardItem>
+                  }
+                </Card>
+              </TouchableHighlight>
             );
           })}
         </Content>
