@@ -53,6 +53,7 @@ class Home extends Component {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
         time: Date.now(),
+        firstSpotting: true,
       });
     });
   }

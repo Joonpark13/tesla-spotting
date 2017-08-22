@@ -9,9 +9,11 @@ class Spotting extends Component {
   constructor(props) {
     super(props);
 
+    const navProps = props.navigation.state.params;
+
     this.state = {
-      color: '',
-      details: '',
+      color: navProps.firstSpotting ? '' : navProps.color,
+      details: navProps.firstSpotting ? '' : navProps.details,
       uid: null,
       image: null,
     };
@@ -31,49 +33,72 @@ class Spotting extends Component {
   handleSave() {
     const navProps = this.props.navigation.state.params;
 
-    // Firebase Storage upload using react-native-fetch-blob
-    if (this.state.image) {
-      // Store original window variables to put back later
-      const tempXMLHttpRequest = window.XMLHttpRequest;
-      const tempBlob = window.Blob;
-
-
-      // https://github.com/wkh237/react-native-fetch-blob/issues/83
-      const polyfill = RNFetchBlob.polyfill;
-
-      // use react-native-fetch-blob's polyfill for firebase upload
-      window.XMLHttpRequest = polyfill.XMLHttpRequest;
-      window.Blob = polyfill.Blob;
-
-      const storageRef = firebase.storage().ref();
-      const imageRef = storageRef.child(`images/${this.state.uid}/${navProps.time}.jpg`);
-
-      Blob.build(RNFetchBlob.wrap(this.state.image.path), { type: 'image/jpeg' })
-        .then(blob => imageRef.put(blob)).then((snapshot) => {
-          // Put back the original window variables
-          window.XMLHttpRequest = tempXMLHttpRequest;
-          window.Blob = tempBlob;
-
-          const backAction = NavigationActions.back();
-          this.props.navigation.dispatch(backAction);
-        });
-    }
-
-    // Firebase database write
     const db = firebase.database();
     const ref = db.ref(`users/${this.state.uid}/teslas`);
-    ref.push().set({
-      model: navProps.model,
-      latitude: navProps.latitude,
-      longitude: navProps.longitude,
-      time: navProps.time,
-      color: this.state.color,
-      details: this.state.details,
-      image: this.state.image,
-    }).then(() => {
-      // TODO: Wait for both firebase actions to complete before going back
-      // TODO: implement loading circle while actions take place
-    });
+
+    const backAction = NavigationActions.back();
+
+    if (navProps.firstSpotting) {
+      let storagePromise;
+
+      // Firebase Storage upload using react-native-fetch-blob
+      if (this.state.image) {
+        // Store original window variables to put back later
+        const tempXMLHttpRequest = window.XMLHttpRequest;
+        const tempBlob = window.Blob;
+
+
+        // https://github.com/wkh237/react-native-fetch-blob/issues/83
+        const polyfill = RNFetchBlob.polyfill;
+
+        // use react-native-fetch-blob's polyfill for firebase upload
+        window.XMLHttpRequest = polyfill.XMLHttpRequest;
+        window.Blob = polyfill.Blob;
+
+        const storageRef = firebase.storage().ref();
+        const imageRef = storageRef.child(`images/${this.state.uid}/${navProps.time}.jpg`);
+
+        storagePromise = Blob.build(RNFetchBlob.wrap(this.state.image.path), { type: 'image/jpeg' })
+          .then(blob => imageRef.put(blob)).then(() => {
+            // Put back the original window variables
+            window.XMLHttpRequest = tempXMLHttpRequest;
+            window.Blob = tempBlob;
+          });
+      }
+
+      // Firebase database write
+      const dbPromise = ref.push().set({
+        model: navProps.model,
+        latitude: navProps.latitude,
+        longitude: navProps.longitude,
+        time: navProps.time,
+        color: this.state.color,
+        details: this.state.details,
+        image: this.state.image,
+      });
+
+      // Navgiate back once both the Firebase storage and database operations finish
+      Promise.all([storagePromise, dbPromise]).then(() => {
+        this.props.navigation.dispatch(backAction);
+      });
+    } else {
+      // Find corresponding data object in Firebase database
+      // (time is unique for each data object)
+      ref.once('value').then((snapshot) => {
+        snapshot.forEach((childSnapshot) => {
+          if (childSnapshot.val().time === navProps.time) {
+            const key = childSnapshot.key;
+            const updateRef = db.ref(`users/${this.state.uid}/teslas/${key}`);
+            updateRef.update({
+              color: this.state.color,
+              details: this.state.details,
+            }).then(() => {
+              this.props.navigation.dispatch(backAction);
+            });
+          }
+        });
+      });
+    }
   }
 
   handleImage(image) {
@@ -108,14 +133,16 @@ class Spotting extends Component {
         {this.state.image &&
           <Image source={{ uri: this.state.image.mediaUri }} style={{ width: '100%', height: 100 }} />
         }
-        <Button
-          title="Add a Photo"
-          onPress={() => {
-            this.props.navigation.navigate('Camera', {
-              handleImage: this.handleImage,
-            });
-          }}
-        />
+        {navProps.firstSpotting &&
+          <Button
+            title="Add a Photo"
+            onPress={() => {
+              this.props.navigation.navigate('Camera', {
+                handleImage: this.handleImage,
+              });
+            }}
+          />
+        }
         <Button title="Save" onPress={this.handleSave} />
       </View>
     );

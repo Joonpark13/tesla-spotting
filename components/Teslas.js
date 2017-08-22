@@ -50,11 +50,12 @@ class Teslas extends Component {
             const datetime = new Date(tesla.time);
             return (
               <TouchableHighlight
+                key={tesla.key}
                 onPress={() => {
-                  this.props.navigation.navigate('Details', { ...tesla });
+                  this.props.navigation.navigate('Details', { key: tesla.key });
                 }}
               >
-                <Card key={tesla.key}>
+                <Card>
                   <CardItem>
                     <Text>{tesla.model}</Text>
                     <Text>{tesla.color}</Text>
