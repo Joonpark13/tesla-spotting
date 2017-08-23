@@ -31,6 +31,7 @@ class Home extends Component {
 
     this.state = {
       loggedIn: false,
+      temp: '',
     };
 
     this.handleSpot = this.handleSpot.bind(this);
@@ -47,14 +48,33 @@ class Home extends Component {
   }
 
   handleSpot(name) {
+    // Return true if location component is any of the types specified in
+    // the array componentsWanted
+    const isAddressType = (component, wantedTypes) =>
+      wantedTypes.some(wantedType => component.types.indexOf(wantedType) !== -1);
+
     navigator.geolocation.getCurrentPosition((location) => {
-      this.props.navigation.navigate('Spotting', {
-        model: name,
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        time: Date.now(),
-        firstSpotting: true,
-      });
+      fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.coords.latitude},${location.coords.longitude}&key=AIzaSyD1_qN7OsGhZFDuKjCEM0Aowdugpz38zIY`)
+        .then(response => response.json())
+        .then((json) => {
+          // See https://developers.google.com/maps/documentation/geocoding/start?csw=1 for data shape
+          const locationComponents = json.results[0].address_components;
+          // Format location as "Street, City, State"
+          const wantedTypes = ['route', 'sublocality', 'administrative_area_level_1'];
+          const formattedLocation = locationComponents
+            .filter(component => isAddressType(component, wantedTypes))
+            .map(component => component.short_name)
+            .join(', ');
+
+          this.props.navigation.navigate('Spotting', {
+            model: name,
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+            location: formattedLocation,
+            time: Date.now(),
+            firstSpotting: true,
+          });
+        });
     });
   }
 

@@ -71,6 +71,7 @@ class Spotting extends Component {
         model: navProps.model,
         latitude: navProps.latitude,
         longitude: navProps.longitude,
+        location: navProps.location,
         time: navProps.time,
         color: this.state.color,
         details: this.state.details,
@@ -110,10 +111,8 @@ class Spotting extends Component {
     return (
       <View>
         <Text>{navProps.model}</Text>
-        <Text>Latitude</Text>
-        <Text>{navProps.latitude}</Text>
-        <Text>Longitude</Text>
-        <Text>{navProps.longitude}</Text>
+        <Text>Location</Text>
+        <Text>{navProps.location}</Text>
         <Text>Time</Text>
         <Text>{navProps.time}</Text>
 

@@ -49,6 +49,7 @@ class Details extends Component {
             <View>
               <Button title="Edit" onPress={this.handleEdit} />
               <Text>{this.state.teslaData.model}</Text>
+              <Text>{this.state.teslaData.location}</Text>
             </View>
           }
         </Content>

@@ -59,6 +59,7 @@ class Teslas extends Component {
                   <CardItem>
                     <Text>{tesla.model}</Text>
                     <Text>{tesla.color}</Text>
+                    <Text>{tesla.location}</Text>
                     <Text>{datetime.toDateString()}</Text>
                   </CardItem>
                   {tesla.image &&
