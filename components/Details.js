@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Text, Button, View } from 'react-native';
+import { StyleSheet, Text, Button, View } from 'react-native';
 import { Container, Content } from 'native-base';
+import MapView, { Marker } from 'react-native-maps';
 
 import firebase from './firebase';
 
@@ -50,6 +51,22 @@ class Details extends Component {
               <Button title="Edit" onPress={this.handleEdit} />
               <Text>{this.state.teslaData.model}</Text>
               <Text>{this.state.teslaData.location}</Text>
+              <MapView
+                style={{ width: '100%', height: 500 }}
+                initialRegion={{
+                  latitude: this.state.teslaData.latitude,
+                  longitude: this.state.teslaData.longitude,
+                  latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421,
+                }}
+              >
+                <Marker
+                  coordinate={{
+                    latitude: this.state.teslaData.latitude,
+                    longitude: this.state.teslaData.longitude,
+                  }}
+                />
+              </MapView>
             </View>
           }
         </Content>
