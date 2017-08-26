@@ -45,6 +45,7 @@ class Email extends Component {
           keyboardType="email-address"
           onChangeText={this.handleEmailChange}
           value={this.props.email}
+          underlineColorAndroid="black"
         />
       </View>
     );

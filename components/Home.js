@@ -12,9 +12,13 @@ import IOSStatusSpacer from './IOSStatusSpacer';
 import AndroidToolbar from './AndroidToolbar';
 
 import modelS from '../images/s.jpg';
+import modelSHero from '../images/s_spotting.jpg';
 import modelX from '../images/x.jpg';
+import modelXHero from '../images/x_spotting.jpg';
 import roadster from '../images/roadster.jpg';
+import roadsterHero from '../images/roadster_spotting.jpg';
 import model3 from '../images/3.jpg';
+import model3Hero from '../images/3_spotting.jpg';
 
 const styles = StyleSheet.create({
   modelSelect: {
@@ -47,7 +51,7 @@ class Home extends Component {
     });
   }
 
-  handleSpot(name) {
+  handleSpot(name, heroImage) {
     // Return true if location component is any of the types specified in
     // the array componentsWanted
     const isAddressType = (component, wantedTypes) =>
@@ -73,6 +77,7 @@ class Home extends Component {
             location: formattedLocation,
             time: Date.now(),
             firstSpotting: true,
+            heroImage,
           });
         });
     }, (error) => {
@@ -94,10 +99,10 @@ class Home extends Component {
         }
 
         <ScrollView style={styles.modelSelect}>
-          <ModelCard image={modelS} name="Model S" handleSpot={() => this.handleSpot('Model S')} />
-          <ModelCard image={modelX} name="Model X" handleSpot={() => this.handleSpot('Model X')} />
-          <ModelCard image={roadster} name="Roadster" handleSpot={() => this.handleSpot('Roadster')} />
-          <ModelCard image={model3} name="Model 3" handleSpot={() => this.handleSpot('Model 3')} />
+          <ModelCard image={modelS} name="Model S" handleSpot={() => this.handleSpot('Model S', modelSHero)} />
+          <ModelCard image={modelX} name="Model X" handleSpot={() => this.handleSpot('Model X', modelXHero)} />
+          <ModelCard image={roadster} name="Roadster" handleSpot={() => this.handleSpot('Roadster', roadsterHero)} />
+          <ModelCard image={model3} name="Model 3" handleSpot={() => this.handleSpot('Model 3', model3Hero)} />
           {Platform.OS === 'android' && <View style={styles.spacer} />}
         </ScrollView>
       </View>

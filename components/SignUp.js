@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
+  ScrollView,
   Image,
   View,
   Text,
@@ -120,7 +121,7 @@ class SignUp extends Component {
     const { navigate } = this.props.navigation;
 
     return (
-      <View style={styles.loginPageContainer}>
+      <ScrollView style={styles.loginPageContainer}>
         <Image source={tesla} style={styles.logo} />
 
         <View style={styles.loginOptionsContainer}>
@@ -155,6 +156,7 @@ class SignUp extends Component {
                 secureTextEntry
                 onChangeText={this.handleConfirmChange}
                 value={this.confirm}
+                underlineColorAndroid="black"
               />
             </View>
 
@@ -176,7 +178,7 @@ class SignUp extends Component {
             <Button title="Login" onPress={() => navigate('Login')} />
           </View>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }

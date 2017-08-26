@@ -37,6 +37,7 @@ class Password extends Component {
           secureTextEntry
           onChangeText={this.handlePasswordChange}
           value={this.props.password}
+          underlineColorAndroid="black"
         />
       </View>
     );
