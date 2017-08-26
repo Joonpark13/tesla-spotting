@@ -75,6 +75,10 @@ class Home extends Component {
             firstSpotting: true,
           });
         });
+    }, (error) => {
+      console.error(error); // TODO: Replace with error modal
+    }, {
+      enableHighAccuracy: false,
     });
   }
 
