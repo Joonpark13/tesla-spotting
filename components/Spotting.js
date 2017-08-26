@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Button, TextInput, Image } from 'react-native';
+import { View, Text, Button, TextInput, Image, ActivityIndicator } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import RNFetchBlob from 'react-native-fetch-blob';
 
@@ -16,6 +16,7 @@ class Spotting extends Component {
       details: navProps.firstSpotting ? '' : navProps.details,
       uid: null,
       image: null,
+      saving: false,
     };
 
     this.handleSave = this.handleSave.bind(this);
@@ -31,6 +32,9 @@ class Spotting extends Component {
   }
 
   handleSave() {
+    // Show loading indicator
+    this.setState({ saving: true });
+
     const navProps = this.props.navigation.state.params;
 
     const db = firebase.database();
@@ -81,6 +85,7 @@ class Spotting extends Component {
       // Navgiate back once both the Firebase storage and database operations finish
       Promise.all([storagePromise, dbPromise]).then(() => {
         this.props.navigation.dispatch(backAction);
+        this.setState({ saving: false });
       });
     } else {
       // Find corresponding data object in Firebase database
@@ -95,6 +100,7 @@ class Spotting extends Component {
               details: this.state.details,
             }).then(() => {
               this.props.navigation.dispatch(backAction);
+              this.setState({ saving: false });
             });
           }
         });
@@ -142,7 +148,11 @@ class Spotting extends Component {
             }}
           />
         }
-        <Button title="Save" onPress={this.handleSave} />
+        {this.state.saving ?
+          <ActivityIndicator />
+          :
+          <Button title="Save" onPress={this.handleSave} />
+        }
       </View>
     );
   }
