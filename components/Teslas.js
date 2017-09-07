@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, Text, Image, TouchableHighlight } from 'react-native';
+import { Platform, Text, TouchableHighlight } from 'react-native';
 import { Container, Content, Card, CardItem } from 'native-base';
 
 import firebase from './firebase';
@@ -62,11 +62,6 @@ class Teslas extends Component {
                     <Text>{tesla.location}</Text>
                     <Text>{datetime.toDateString()}</Text>
                   </CardItem>
-                  {tesla.image &&
-                    <CardItem cardBody>
-                      <Image source={{ uri: tesla.image.mediaUri }} style={{ width: '100%', height: 100 }} />
-                    </CardItem>
-                  }
                 </Card>
               </TouchableHighlight>
             );
