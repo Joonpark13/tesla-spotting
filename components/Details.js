@@ -1,10 +1,26 @@
 import React, { Component } from 'react';
-import { Text, Button, View, Modal } from 'react-native';
-import { Container, Content } from 'native-base';
+import { StyleSheet, Text, Button, View, Modal } from 'react-native';
+import { Container, Content, Text as DefaultText } from 'native-base';
 import MapView, { Marker } from 'react-native-maps';
 import { NavigationActions } from 'react-navigation';
 
 import firebase from './firebase';
+import { helperStyles, parseDate } from './helpers';
+import Hero from './Hero';
+
+const styles = StyleSheet.create({
+  map: {
+    width: '80%',
+    height: 250,
+    alignSelf: 'center',
+  },
+  contentContainer: {
+    padding: 16,
+  },
+  detailsText: {
+    marginBottom: 8,
+  },
+});
 
 class Details extends Component {
   constructor(props) {
@@ -21,6 +37,13 @@ class Details extends Component {
     this.getTeslaData = this.getTeslaData.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
+
+  static navigationOptions = ({ navigation }) => ({
+    title: `${navigation.state.params.model} Details`,
+    headerStyle: helperStyles.header,
+    headerTintColor: 'white',
+    headerTitleStyle: helperStyles.headerTitle,
+  });
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
@@ -60,26 +83,36 @@ class Details extends Component {
         <Content>
           {this.state.teslaData &&
             <View>
-              <Button title="Edit" onPress={this.handleEdit} />
-              <Button title="Delete" onPress={() => this.setState({ modalOpen: true })} />
-              <Text>{this.state.teslaData.model}</Text>
-              <Text>{this.state.teslaData.location}</Text>
-              <MapView
-                style={{ width: '100%', height: 500 }}
-                initialRegion={{
-                  latitude: this.state.teslaData.latitude,
-                  longitude: this.state.teslaData.longitude,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
-                }}
-              >
-                <Marker
-                  coordinate={{
+              <Hero heroImage={this.state.teslaData.heroImage} model={this.state.teslaData.model} />
+              <View style={styles.contentContainer}>
+                <DefaultText style={styles.detailsText}>{this.state.teslaData.location}</DefaultText>
+                <DefaultText style={styles.detailsText}>{parseDate(this.state.teslaData.time)}</DefaultText>
+                <MapView
+                  style={styles.map}
+                  initialRegion={{
                     latitude: this.state.teslaData.latitude,
                     longitude: this.state.teslaData.longitude,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
                   }}
-                />
-              </MapView>
+                >
+                  <Marker
+                    coordinate={{
+                      latitude: this.state.teslaData.latitude,
+                      longitude: this.state.teslaData.longitude,
+                    }}
+                  />
+                </MapView>
+              </View>
+
+              <View style={helperStyles.buttonContainer}>
+                <View style={helperStyles.button}>
+                  <Button title="Edit" color="black" onPress={this.handleEdit} />
+                </View>
+                <View style={helperStyles.button}>
+                  <Button title="Delete" color="black" onPress={() => this.setState({ modalOpen: true })} />
+                </View>
+              </View>
             </View>
           }
 

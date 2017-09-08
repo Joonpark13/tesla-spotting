@@ -14,6 +14,7 @@ import RNFetchBlob from 'react-native-fetch-blob';
 
 import firebase from './firebase';
 import { helperStyles, parseDate, colors } from './helpers';
+import Hero from './Hero';
 
 const styles = StyleSheet.create({
   heroImage: {
@@ -43,13 +44,6 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     paddingHorizontal: 16,
-    marginTop: 16,
-  },
-  buttonContainer: {
-    paddingHorizontal: 16,
-    marginTop: 16,
-  },
-  button: {
     marginTop: 16,
   },
 });
@@ -111,6 +105,7 @@ class Spotting extends Component {
         time: this.navProps.time,
         color: this.state.color,
         details: this.state.details,
+        heroImage: this.navProps.heroImage,
       }).then(() => {
         this.props.navigation.dispatch(backAction);
         this.setState({ saving: false });
@@ -139,12 +134,7 @@ class Spotting extends Component {
   render() {
     return (
       <ScrollView>
-        <View>
-          <Image source={this.navProps.heroImage} style={styles.heroImage} />
-          <View style={styles.heroTitleWrapper}>
-            <Text style={styles.heroTitle}>{this.navProps.model}</Text>
-          </View>
-        </View>
+        <Hero heroImage={this.navProps.heroImage} model={this.navProps.model} />
 
         <View style={styles.infoTextContainer}>
           <Text style={styles.infoText}>{this.navProps.location}</Text>
@@ -167,8 +157,8 @@ class Spotting extends Component {
           />
         </View>
 
-        <View style={styles.buttonContainer}>
-          <View style={styles.button}>
+        <View style={helperStyles.buttonContainer}>
+          <View style={helperStyles.button}>
             {this.state.saving ?
               <ActivityIndicator />
               :

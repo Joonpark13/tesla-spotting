@@ -29,6 +29,13 @@ export const helperStyles = StyleSheet.create({
   headerTitle: {
     color: 'white',
   },
+  buttonContainer: {
+    paddingHorizontal: 16,
+    marginVertical: 16,
+  },
+  button: {
+    marginTop: 16,
+  },
 });
 
 export const parseDate = (dateNum) => {

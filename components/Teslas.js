@@ -28,6 +28,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexWrap: 'wrap',
   },
+  placeholderContainer: {
+    alignItems: 'center',
+    padding: 8,
+  },
 });
 
 class Teslas extends Component {
@@ -78,27 +82,34 @@ class Teslas extends Component {
           }
 
           <Content style={styles.content}>
-            {this.state.teslas.map((tesla) => {
-              return (
-                <TouchableHighlight
-                  key={tesla.key}
-                  onPress={() => {
-                    this.props.navigation.navigate('Details', { key: tesla.key });
-                  }}
-                  style={styles.cardContainer}
-                >
-                  <Card>
-                    <CardItem style={styles.cardItem}>
-                      <H3 style={styles.cardTitle}>{tesla.color ? `${tesla.color} ${tesla.model}` : tesla.model}</H3>
-                      <View style={styles.cardInfo}>
-                        <Text>{tesla.location}</Text>
-                        <Text>{parseDate(tesla.time)}</Text>
-                      </View>
-                    </CardItem>
-                  </Card>
-                </TouchableHighlight>
-              );
-            })}
+            {this.state.teslas.length === 0 && // If user has not spotted any Teslas
+              <View style={styles.placeholderContainer}>
+                <Text>When you spot new Teslas, they'll appear here.</Text>
+              </View>
+            }
+
+            {this.state.teslas.map(tesla => (
+              <TouchableHighlight
+                key={tesla.key}
+                onPress={() => {
+                  this.props.navigation.navigate('Details', {
+                    key: tesla.key,
+                    model: tesla.model,
+                  });
+                }}
+                style={styles.cardContainer}
+              >
+                <Card>
+                  <CardItem style={styles.cardItem}>
+                    <H3 style={styles.cardTitle}>{tesla.color ? `${tesla.color} ${tesla.model}` : tesla.model}</H3>
+                    <View style={styles.cardInfo}>
+                      <Text>{tesla.location}</Text>
+                      <Text>{parseDate(tesla.time)}</Text>
+                    </View>
+                  </CardItem>
+                </Card>
+              </TouchableHighlight>
+            ))}
           </Content>
         </Container>
       </StyleProvider>
