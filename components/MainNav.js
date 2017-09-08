@@ -1,10 +1,12 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, Text } from 'react-native';
 import { DrawerNavigator, TabNavigator } from 'react-navigation';
+import DrawerItems from 'react-navigation/src/views/Drawer/DrawerNavigatorItems';
 
 import Home from './Home';
 import Profile from './Profile';
 import Teslas from './Teslas';
+import { colors } from './helpers';
 
 const MainNav = Platform.OS === 'ios'
   ? (
@@ -32,6 +34,9 @@ const MainNav = Platform.OS === 'ios'
       },
     }, {
       drawerWidth: 150,
+      contentComponent: props => (
+        <DrawerItems {...props} activeTintColor={colors.teslaRed} />
+      ),
     })
   );
 
