@@ -1,8 +1,34 @@
 import React, { Component } from 'react';
-import { Platform, Text, TouchableHighlight } from 'react-native';
-import { Container, Header, Left, Body, Title, Button, Content, Card, CardItem, Icon } from 'native-base';
+import { StyleSheet, Platform, Text, TouchableHighlight, View } from 'react-native';
+import { StyleProvider, Container, Header, Left, Body, Title, Button, Content, Card, CardItem, Icon, H3 } from 'native-base';
+
+import getTheme from '../native-base-theme/components';
+import platform from '../native-base-theme/variables/platform';
 
 import firebase from './firebase';
+import { parseDate } from './helpers';
+
+const styles = StyleSheet.create({
+  content: {
+    marginVertical: 6,
+  },
+  cardContainer: {
+    marginHorizontal: 6,
+  },
+  cardItem: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
+  cardTitle: {
+    lineHeight: 24,
+  },
+  cardInfo: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+  },
+});
 
 class Teslas extends Component {
   constructor(props) {
@@ -36,43 +62,46 @@ class Teslas extends Component {
 
   render() {
     return (
-      <Container>
-        {Platform.OS === 'android' &&
-          <Header>
-            <Left style={{ flex: 0.15 }}>
-              <Button transparent onPress={() => this.props.navigation.navigate('DrawerOpen')}>
-                <Icon name="menu" />
-              </Button>
-            </Left>
-            <Body>
-              <Title>Teslas</Title>
-            </Body>
-          </Header>
-        }
+      <StyleProvider style={getTheme(platform)}>
+        <Container>
+          {Platform.OS === 'android' &&
+            <Header>
+              <Left style={{ flex: 0.15 }}>
+                <Button transparent onPress={() => this.props.navigation.navigate('DrawerOpen')}>
+                  <Icon name="menu" />
+                </Button>
+              </Left>
+              <Body>
+                <Title>Teslas</Title>
+              </Body>
+            </Header>
+          }
 
-        <Content>
-          {this.state.teslas.map((tesla) => {
-            const datetime = new Date(tesla.time);
-            return (
-              <TouchableHighlight
-                key={tesla.key}
-                onPress={() => {
-                  this.props.navigation.navigate('Details', { key: tesla.key });
-                }}
-              >
-                <Card>
-                  <CardItem>
-                    <Text>{tesla.model}</Text>
-                    <Text>{tesla.color}</Text>
-                    <Text>{tesla.location}</Text>
-                    <Text>{datetime.toDateString()}</Text>
-                  </CardItem>
-                </Card>
-              </TouchableHighlight>
-            );
-          })}
-        </Content>
-      </Container>
+          <Content style={styles.content}>
+            {this.state.teslas.map((tesla) => {
+              return (
+                <TouchableHighlight
+                  key={tesla.key}
+                  onPress={() => {
+                    this.props.navigation.navigate('Details', { key: tesla.key });
+                  }}
+                  style={styles.cardContainer}
+                >
+                  <Card>
+                    <CardItem style={styles.cardItem}>
+                      <H3 style={styles.cardTitle}>{tesla.color ? `${tesla.color} ${tesla.model}` : tesla.model}</H3>
+                      <View style={styles.cardInfo}>
+                        <Text>{tesla.location}</Text>
+                        <Text>{parseDate(tesla.time)}</Text>
+                      </View>
+                    </CardItem>
+                  </Card>
+                </TouchableHighlight>
+              );
+            })}
+          </Content>
+        </Container>
+      </StyleProvider>
     );
   }
 }
