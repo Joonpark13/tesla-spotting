@@ -10,10 +10,10 @@ import Password from './Password';
 const styles = StyleSheet.create({
   page: {
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: 'white',
-    paddingHorizontal: 16,
+    padding: 16,
     height: '100%',
   },
   content: {

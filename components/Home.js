@@ -35,7 +35,6 @@ class Home extends Component {
 
     this.state = {
       loggedIn: false,
-      temp: '',
     };
 
     this.handleSpot = this.handleSpot.bind(this);

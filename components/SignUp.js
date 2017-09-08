@@ -121,7 +121,7 @@ class SignUp extends Component {
     const { navigate } = this.props.navigation;
 
     return (
-      <ScrollView style={styles.loginPageContainer}>
+      <ScrollView contentContainerStyle={styles.loginPageContainer}>
         <Image source={tesla} style={styles.logo} />
 
         <View style={styles.loginOptionsContainer}>

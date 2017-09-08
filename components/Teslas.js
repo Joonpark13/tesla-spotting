@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Platform, Text, TouchableHighlight } from 'react-native';
-import { Container, Content, Card, CardItem } from 'native-base';
+import { Container, Header, Left, Body, Title, Button, Content, Card, CardItem, Icon } from 'native-base';
 
 import firebase from './firebase';
-import AndroidToolbar from './AndroidToolbar';
 
 class Teslas extends Component {
   constructor(props) {
@@ -38,14 +37,20 @@ class Teslas extends Component {
   render() {
     return (
       <Container>
-        <Content>
-          {Platform.OS === 'android' &&
-            <AndroidToolbar
-              title="Teslas"
-              navOpen={() => this.props.navigation.navigate('DrawerOpen')}
-            />
-          }
+        {Platform.OS === 'android' &&
+          <Header>
+            <Left style={{ flex: 0.15 }}>
+              <Button transparent onPress={() => this.props.navigation.navigate('DrawerOpen')}>
+                <Icon name="menu" />
+              </Button>
+            </Left>
+            <Body>
+              <Title>Teslas</Title>
+            </Body>
+          </Header>
+        }
 
+        <Content>
           {this.state.teslas.map((tesla) => {
             const datetime = new Date(tesla.time);
             return (
