@@ -25,7 +25,6 @@ const styles = StyleSheet.create({
     maxHeight: 110,
   },
   loginPageContainer: {
-    display: 'flex',
     alignItems: 'center',
     backgroundColor: 'white',
     paddingTop: 20,
