@@ -33,7 +33,7 @@ const ModelCard = props => (
     onPress={props.handleSpot}
   >
     <View>
-      <Image source={props.image} blurRadius={2} style={styles.modelImages} />
+      <Image source={props.image} blurRadius={1} style={styles.modelImages} />
       <View style={styles.modelImageCover}>
         <Text style={styles.modelName}>{props.name}</Text>
       </View>
