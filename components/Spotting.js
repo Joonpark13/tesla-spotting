@@ -78,9 +78,11 @@ class Spotting extends Component {
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
-      this.setState({
-        uid: user.uid,
-      });
+      if (user) {
+        this.setState({
+          uid: user.uid,
+        });
+      }
     });
   }
 

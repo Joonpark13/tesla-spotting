@@ -1,10 +1,22 @@
 import React, { Component } from 'react';
-import { Platform, View, Button } from 'react-native';
+import { StyleSheet, Platform, View, Button } from 'react-native';
 import { NavigationActions } from 'react-navigation';
+import { H3 } from 'native-base';
 
 import firebase from './firebase';
 import AndroidToolbar from './AndroidToolbar';
 import IOSStatusSpacer from './IOSStatusSpacer';
+
+const styles = StyleSheet.create({
+  profileContent: {
+    padding: 8,
+    alignItems: 'center',
+  },
+  userEmail: {
+    marginVertical: 16,
+    lineHeight: 24,
+  },
+});
 
 class Profile extends Component {
   constructor(props) {
@@ -12,6 +24,7 @@ class Profile extends Component {
 
     this.state = {
       loggedIn: false,
+      user: null,
     };
 
     this.handleLogOut = this.handleLogOut.bind(this);
@@ -20,7 +33,10 @@ class Profile extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        this.setState({ loggedIn: true });
+        this.setState({
+          loggedIn: true,
+          user,
+        });
       } else {
         this.setState({ loggedIn: false });
       }
@@ -53,7 +69,10 @@ class Profile extends Component {
           />
         }
         {this.state.loggedIn &&
-          <Button title="Log Out" onPress={this.handleLogOut} />
+          <View style={styles.profileContent}>
+            <H3 style={styles.userEmail}>{this.state.user.email}</H3>
+            <Button color="black" title="Log Out" onPress={this.handleLogOut} />
+          </View>
         }
       </View>
     );

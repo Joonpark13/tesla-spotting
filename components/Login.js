@@ -122,7 +122,7 @@ class Login extends Component {
           {this.state.errorMessage &&
             <Text style={helperStyles.errorText}>{this.state.errorMessage}</Text>
           }
-          <Button title="Login" onPress={this.handleSignin} />
+          <Button color="black" title="Login" onPress={this.handleSignin} />
         </View>
       </View>
     );

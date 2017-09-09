@@ -167,6 +167,7 @@ class SignUp extends Component {
               <Text style={helperStyles.errorText}>{this.state.errorMessage}</Text>
             }
             <Button
+              color="black"
               title="Create Account"
               onPress={this.createUser}
             />
@@ -175,7 +176,7 @@ class SignUp extends Component {
           <View style={styles.suboptionContainer}>
             <Text style={styles.sectionTitle}>Already have an account?</Text>
 
-            <Button title="Login" onPress={() => navigate('Login')} />
+            <Button color="black" title="Login" onPress={() => navigate('Login')} />
           </View>
         </View>
       </ScrollView>
