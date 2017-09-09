@@ -1,4 +1,4 @@
-<img src="src/images/transparentTeslaLogo.png" alt="Tesla Logo" align="right" width="100" />
+<img src="images/transparentTeslaLogo.png" alt="Tesla Logo" align="right" width="100" />
 
 # Tesla Spotting
 
