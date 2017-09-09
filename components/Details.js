@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, Button, View, Modal } from 'react-native';
-import { Container, Content, Text as DefaultText } from 'native-base';
+import { StyleSheet, Text, Button, View } from 'react-native';
+import { Container, Content, Text as DefaultText, ActionSheet } from 'native-base';
 import MapView, { Marker } from 'react-native-maps';
 import { NavigationActions } from 'react-navigation';
 
@@ -30,12 +30,12 @@ class Details extends Component {
       key: this.props.navigation.state.params.key,
       uid: null,
       teslaData: null,
-      modalOpen: false,
     };
 
     this.handleEdit = this.handleEdit.bind(this);
     this.getTeslaData = this.getTeslaData.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleDeleteConfirm = this.handleDeleteConfirm.bind(this);
   }
 
   static navigationOptions = ({ navigation }) => ({
@@ -77,6 +77,16 @@ class Details extends Component {
     this.props.navigation.dispatch(NavigationActions.back());
   }
 
+  handleDeleteConfirm() {
+    ActionSheet.show({
+      options: ['Delete', 'Cancel'],
+      cancelButtonIndex: 1,
+      title: 'Are you sure you want to delete this Tesla?',
+    }, clickedIndex => {
+      if (clickedIndex === '0') this.handleDelete();
+    });
+  }
+
   render() {
     return (
       <Container>
@@ -110,22 +120,11 @@ class Details extends Component {
                   <Button title="Edit" color="black" onPress={this.handleEdit} />
                 </View>
                 <View style={helperStyles.button}>
-                  <Button title="Delete" color="black" onPress={() => this.setState({ modalOpen: true })} />
+                  <Button title="Delete" color="black" onPress={this.handleDeleteConfirm} />
                 </View>
               </View>
             </View>
           }
-
-          <Modal
-            visible={this.state.modalOpen}
-            onRequestClose={() => {}}
-          >
-            <View>
-              <Text>Are you sure you want to delete this Tesla?</Text>
-              <Button title="Delete" onPress={this.handleDelete} />
-              <Button title="Cancel" onPress={() => this.setState({ modalOpen: false })} />
-            </View>
-          </Modal>
         </Content>
       </Container>
     );

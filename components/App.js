@@ -1,4 +1,6 @@
+import React from 'react';
 import { StackNavigator } from 'react-navigation';
+import { Root } from 'native-base';
 
 import SignUp from './SignUp';
 import Login from './Login';
@@ -21,4 +23,8 @@ const App = StackNavigator({
   Details: { screen: Details },
 });
 
-export default App;
+export default () => (
+  <Root>
+    <App />
+  </Root>
+);
