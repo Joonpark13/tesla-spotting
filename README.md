@@ -18,7 +18,8 @@ And thus, this app was born.
 
 ### For Users
 
-App coming soon to the Play Store, iOS support coming soon after.
+(Available on the Play Store!)[https://play.google.com/store/apps/details?id=com.teslaspotting]
+iOS support coming soon.
 
 ### For Developers
 
